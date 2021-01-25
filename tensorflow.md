@@ -38,7 +38,8 @@ pub enum AttrValue_oneof_value {
 }
 ```
 
-Do I need add/remove any variants from this enum to in `AttrValue` or can I take it as it is?
+Do I need add/remove any variants from this enum to in `AttrValue` or can I take it as it is? Where do I need to create this enum?
+Should I create it in `src/lib.rs`?
 
 Here, the two new fields are from the struct `OpDef_AttrDef` that are present in `src/protos/op_def.rs` LN: 1176
 ```rust
