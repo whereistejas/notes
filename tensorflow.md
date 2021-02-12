@@ -57,3 +57,18 @@ pub struct OpDef_AttrDef {
     pub cached_size: ::protobuf::CachedSize,
 }
 ```
+
+## 1st febru
+
+We have a `struct` called `AttrValue`:
+```
+AttrValue --> field: Value
+					 |--> datatype: Option<AttrValue_oneof_value>
+```
+
+We have an `enum` called `AttrValue_oneof_value`:
+```
+AttrValue_oneof_value --> numerous variants
+						|--> 
+
+
