@@ -7,6 +7,7 @@
 3. [`tensorflow`](tensorflow.md)
 4. LDAP trace log parsing
 5. [open source notes](open_source_notes.md)
+6. [cargo](cargo.md)
 
 ## rust notes
 
