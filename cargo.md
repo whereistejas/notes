@@ -12,6 +12,46 @@ this method is used in three places:
 3. `fn uplift_to` - this is the method we are interested in.
 
 ## final pr review
-Hi,
-I think the PR is pretty much ready at this point. I will outline the implementation details:
-1. Our goal is to allow setting of the binary name, without breaking any of the other features such as `cargo clean` or the `deps` file.
+This PR is ready from my side.
+
+Tasks:
+- [x] Add tests.
+- [x] Feature gate and make unstable.
+- [x] Update `cargo-feature` documentation.
+- [x] Add appropriate comments where needed.
+
+This is a short description of my implementation:
+1. We are receiving the name the user expects to give the binary in a parameter called `filename` from `cargo.toml`.
+2. This value is stored in the `bin_name` of the `TargetInner` struct.
+3. We use this name to to create the `hardlink`, in the target directory using `uplift_filename` method. The other binaries that are created in the `deps/` folder, have the same name as the crate.
+4. The `uplift_filename` method is used in three places:
+i. `fn clean` - used for cargo clean.
+https://github.com/rust-lang/cargo/blob/54bc19ee56c2251fc749198cce9605450fecd1df/src/cargo/ops/cargo_clean.rs#L190-L197
+ii. `fn bin_link_for_target` - this method is only used when no `Unit` is found.
+https://github.com/rust-lang/cargo/blob/54bc19ee56c2251fc749198cce9605450fecd1df/src/cargo/core/compiler/context/compilation_files.rs#L304-L307
+We can safely assume that `uplift_filename` here will only return the
+iii. `fn uplift_to` - used for cargo build, this is our method of interest.
+
+### `--message-format=json`
+>     * Check the JSON output for the artifact message in `--message-format=json` contains the correct path.
+
+Something seems to be wrong, here. If you look at the output produced
+```
+{"reason":"compiler-artifact",
+"package_id":"foo 0.0.1 (path+file:///D:/a/cargo/cargo/target/debug/tmp/cit/t160/foo)",
+"manifest_path":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//Cargo.toml",
+"target":{
+ "kind":["bin"],
+ "crate_types":["bin"],
+ "name":"foo",
+ "src_path":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//src/main.rs",
+ "edition":"2015",
+ "doc":true,
+ "doctest":false,
+ "test":true},
+"profile":{"opt_level":"0","debuginfo":2,"debug_assertions":true,"overflow_checks":true,"test":false},
+"features":[],
+"filenames":["D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.exe","D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.pdb"],
+"executable":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.exe","fresh":false}
+ ```
+ Shouldn't all the paths in Windows have forward slashes? Am I missing something here?

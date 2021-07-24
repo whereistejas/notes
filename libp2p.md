@@ -1,5 +1,23 @@
 # `libp2p`
 
+### common imports
+the following modules are always imported:
+1. `identity`
+2. `PeerId`
+3. `upgrade`
+
+### libp2p - basics
+1. always start with creating an `identity`. an `identity` means creating a `PeerId`, a `PeerId` is created from the public key.
+2. authenticate using `noise`.
+3. transport -> upgrade -> authenticate -> multiplex
+
+### kademlia client mode
+
+We need to start by building a test for the expected behaviour.
+
+methods of interest:
+1. https://github.com/libp2p/rust-libp2p/blob/20183c1ea152f5bfe183543e4934e082c1428011/protocols/kad/src/handler.rs#L65
+
 
 ### pseudo-code for test shared by @mxinden
 
