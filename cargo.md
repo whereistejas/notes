@@ -55,6 +55,8 @@ The correct JSON output should be like this:
 {"reason":"build-finished","success":true}
 ```
 
+`cargo-test-support` does some magic with forward slashes for Windows by normalizing them when we use methods like `with_stdout` etc. However, to the best of my knowledge, this normalization is not done for `with_json` methods.
+
 Refer this piece of [code](https://github.com/rust-lang/cargo/blob/9535dc3dfd967c7d9ead64d53544c568a82d7393/crates/cargo-test-support/src/compare.rs#L74)
 
 >     * Check the JSON output for the artifact message in `--message-format=json` contains the correct path.
