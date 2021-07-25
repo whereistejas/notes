@@ -33,25 +33,53 @@ We can safely assume that `uplift_filename` here will only return the
 iii. `fn uplift_to` - used for cargo build, this is our method of interest.
 
 ### `--message-format=json`
+
+The correct JSON output should be like this:
+```json
+{"reason":"compiler-artifact",
+"package_id":"foo 0.1.0 (path+file:///D:/foo)",
+"manifest_path":"D:\\foo\\Cargo.toml",
+"target":{
+	"kind":["bin"],
+	"crate_types":["bin"],
+	"name":"foo",
+	"src_path":"D:\\foo\\src\\main.rs",
+	"edition":"2018",
+	"doc":true,
+	"doctest":false,
+	"test":true},
+"profile":{"opt_level":"0","debuginfo":2,"debug_assertions":true,"overflow_checks":true,"test":false},
+"features":[],
+"filenames":["D:\\foo\\target\\debug\\foo.exe","D:\\foo\\target\\debug\\foo.pdb"],
+"executable":"D:\\foo\\target\\debug\\foo.exe","fresh":false}
+{"reason":"build-finished","success":true}
+```
+
+Refer this piece of [code](https://github.com/rust-lang/cargo/blob/9535dc3dfd967c7d9ead64d53544c568a82d7393/crates/cargo-test-support/src/compare.rs#L74)
+
 >     * Check the JSON output for the artifact message in `--message-format=json` contains the correct path.
 
 Something seems to be wrong, here. If you look at the output produced
-```
+```json
 {"reason":"compiler-artifact",
 "package_id":"foo 0.0.1 (path+file:///D:/a/cargo/cargo/target/debug/tmp/cit/t160/foo)",
 "manifest_path":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//Cargo.toml",
 "target":{
- "kind":["bin"],
- "crate_types":["bin"],
- "name":"foo",
- "src_path":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//src/main.rs",
- "edition":"2015",
- "doc":true,
- "doctest":false,
- "test":true},
+	"kind":["bin"],
+	"crate_types":["bin"],
+	"name":"foo",
+	"src_path":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//src/main.rs",
+	"edition":"2015",
+	"doc":true,
+	"doctest":false,
+	"test":true},
 "profile":{"opt_level":"0","debuginfo":2,"debug_assertions":true,"overflow_checks":true,"test":false},
 "features":[],
 "filenames":["D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.exe","D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.pdb"],
 "executable":"D://a//cargo//cargo//target//debug//tmp//cit//t160//foo//target//debug//007bar.exe","fresh":false}
  ```
  Shouldn't all the paths in Windows have forward slashes? Am I missing something here?
+ 
+ Refer this [doc](https://doc.rust-lang.org/stable/cargo/reference/external-tools.html#json-messages)
+ 
+ Hi, this would seem like a weird request. But, would anyone who is using **Rust on Windows** mind sharing the output of the `cargo build --message-format=json` command from any of your cargo projects? It can be the super simple project that is created by `cargo init`. I'm curious to see what kind of paths are present in the output.
