@@ -1,5 +1,10 @@
 # `libp2p`
 
+### writing a basic `libp2p` program
+What we need:
+1. multiple peers
+2. use MDNS so that the peers can connect and discover one another
+
 ### common imports
 the following modules are always imported:
 1. `identity`
@@ -13,11 +18,18 @@ the following modules are always imported:
 
 ### kademlia client mode
 
+major challegens:
+1. adding the client mode option to the `dht.proto`.
+
 We need to start by building a test for the expected behaviour.
 
 methods of interest:
 1. https://github.com/libp2p/rust-libp2p/blob/20183c1ea152f5bfe183543e4934e082c1428011/protocols/kad/src/handler.rs#L65
 
+### list of methods that I have changed
+1. `inbound_protocol`
+2. `listen_protocol`
+3. `inject_fully_negotiated_inbound`
 
 ### pseudo-code for test shared by @mxinden
 
