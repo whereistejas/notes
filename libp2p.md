@@ -26,6 +26,8 @@ We need to start by building a test for the expected behaviour.
 methods of interest:
 1. https://github.com/libp2p/rust-libp2p/blob/20183c1ea152f5bfe183543e4934e082c1428011/protocols/kad/src/handler.rs#L65
 
+Added test in `behaviour` tests.
+
 ### list of methods that I have changed
 1. `inbound_protocol`
 2. `listen_protocol`
